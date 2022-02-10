@@ -1,0 +1,2 @@
+# MediaQueryProvider
+Android系统媒体库查找提供器
