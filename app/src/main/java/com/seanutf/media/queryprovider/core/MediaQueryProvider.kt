@@ -6,7 +6,7 @@ import com.seanutf.media.queryprovider.data.Album
 import com.seanutf.media.queryprovider.data.Media
 
 
-class MediaPreviewProvider {
+class MediaQueryProvider {
 
     private val store = MediaPreviewStore()
     private val albumQuery = AlbumQueryConfigProvider()
