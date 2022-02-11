@@ -1,20 +1,47 @@
 package com.seanutf.media.queryprovider.core
 
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import com.seanutf.media.queryprovider.QueryMode
+import com.seanutf.media.queryprovider.QueryRule
 import com.seanutf.media.queryprovider.config.QueryConfig
 
 class MediasQueryConfigProvider {
     private var queryConfig: QueryConfig? = null
-
-    private val orderBy: String = MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC"
 
     fun setConfig(queryConfig: QueryConfig?) {
         this.queryConfig = queryConfig
     }
 
     fun getOrderBy(): String {
+        val orderBy: String = queryConfig?.queryRule.let {
+            when (it) {
+                QueryRule.ADD -> {
+                    MediaStore.Files.FileColumns.DATE_ADDED + " DESC"
+                }
+
+                QueryRule.MODIFY -> {
+                    MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC"
+                }
+
+                QueryRule.TAKEN, QueryRule.EXPIRE -> {
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        if (it == QueryRule.TAKEN) {
+                            MediaStore.Files.FileColumns.DATE_TAKEN + " DESC"
+                        } else {
+                            MediaStore.Files.FileColumns.DATE_EXPIRES + " DESC"
+                        }
+                    } else {
+                        MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC"
+                    }
+                }
+
+                else -> {
+                    MediaStore.Files.FileColumns.DATE_MODIFIED + " DESC"
+                }
+            }
+        }
         return orderBy
     }
 

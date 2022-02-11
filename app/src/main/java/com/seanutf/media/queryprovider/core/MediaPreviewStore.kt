@@ -56,7 +56,7 @@ class MediaPreviewStore {
                 selectionArgs,
                 sortOrder
             )
-            return queryAlbum(cursor!!)
+            return queryAlbum(cursor ?: return null)
         } catch (e: Exception) {
             Log.e("MediaPreview", "loadMediaAlbums Data Error: " + e.message)
             return null
@@ -423,7 +423,7 @@ class MediaPreviewStore {
                     sortOrder
                 )
             }
-            return queryMediaList2(cursor!!, loadAlbum)
+            return queryMediaList2(cursor ?: return null, loadAlbum)
         } catch (e: Exception) {
             Log.e("MediaPreview", "loadMediaList Data Error: " + e.message)
             return null

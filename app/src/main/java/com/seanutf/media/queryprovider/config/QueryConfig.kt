@@ -1,6 +1,7 @@
 package com.seanutf.media.queryprovider.config
 
 import com.seanutf.media.queryprovider.QueryMode
+import com.seanutf.media.queryprovider.QueryRule
 import com.seanutf.media.queryprovider.data.ImgFormat
 import com.seanutf.media.queryprovider.data.VideoFormat
 
@@ -24,7 +25,7 @@ class QueryConfig {
      * 只查找大于设置值的图片
      * 默认为-1，即对最小宽度无要求
      * */
-    var imgMinWidth = MIN_DEFAULT_INT_VALUE
+    var imgMinWidth: Int = MIN_DEFAULT_INT_VALUE
 
 
     /**
@@ -32,77 +33,77 @@ class QueryConfig {
      * 只查找小于设置值的图片
      * 默认为-1，即对最大宽度无要求
      * */
-    var imgMaxWidth = MAX_DEFAULT_INT_VALUE
+    var imgMaxWidth: Int = MAX_DEFAULT_INT_VALUE
 
     /**
      * 对查找图片的最小高度要求
      * 只查找大于设置值的图片
      * 默认为-1，即对最小高度无要求
      * */
-    var imgMinHeight = MIN_DEFAULT_INT_VALUE
+    var imgMinHeight: Int = MIN_DEFAULT_INT_VALUE
 
     /**
      * 对查找图片的最大高度要求
      * 只查找小于设置值的图片
      * 默认为-1，即对最大高度无要求
      * */
-    var imgMaxHeight = MAX_DEFAULT_INT_VALUE
+    var imgMaxHeight: Int = MAX_DEFAULT_INT_VALUE
 
     /**
      * 对查找图片的最小文件体积要求
      * 只查找大于设置值的图片
      * 默认为-1，即对最小文件体积无要求
      * */
-    var imgMinSize = MIN_DEFAULT_LONG_VALUE
+    var imgMinSize: Long = MIN_DEFAULT_LONG_VALUE
 
     /**
      * 对查找图片的最大文件体积要求
      * 只查找小于设置值的图片
      * 默认为-1，即对最大文件体积无要求
      * */
-    var imgMaxSize = MAX_DEFAULT_LONG_VALUE
+    var imgMaxSize: Long = MAX_DEFAULT_LONG_VALUE
 
     /**
      * 对查找视频的最小宽度要求
      * 只查找大于设置值的视频
      * 默认为-1，即对最小宽度无要求
      * */
-    var videoMinWidth = MIN_DEFAULT_INT_VALUE
+    var videoMinWidth: Int = MIN_DEFAULT_INT_VALUE
 
     /**
      * 对查找视频的最大宽度要求
      * 只查找小于设置值的视频
      * 默认为-1，即对最大宽度无要求
      * */
-    var videoMaxWidth = MAX_DEFAULT_INT_VALUE
+    var videoMaxWidth: Int = MAX_DEFAULT_INT_VALUE
 
     /**
      * 对查找视频的最小高度要求
      * 只查找大于设置值的视频
      * 默认为-1，即对最小高度无要求
      * */
-    var videoMinHeight = MIN_DEFAULT_INT_VALUE
+    var videoMinHeight: Int = MIN_DEFAULT_INT_VALUE
 
     /**
      * 对查找视频的最大高度要求
      * 只查找小于设置值的视频
      * 默认为-1，即对最大高度无要求
      * */
-    var videoMaxHeight = MAX_DEFAULT_INT_VALUE
+    var videoMaxHeight: Int = MAX_DEFAULT_INT_VALUE
 
     /**
      * 对查找视频的最小文件体积要求
      * 只查找大于设置值的视频
      * 默认为-1，即对最小文件体积无要求
      * */
-    var videoMinSize = MIN_DEFAULT_LONG_VALUE
+    var videoMinSize: Long = MIN_DEFAULT_LONG_VALUE
 
     /**
      * 对查找视频的最大文件体积要求
      * 只查找小于设置值的视频
      * 默认为-1，即对最大文件体积无要求
      * */
-    var videoMaxSize = MAX_DEFAULT_LONG_VALUE
+    var videoMaxSize: Long = MAX_DEFAULT_LONG_VALUE
 
     /**
      * 对查找媒体的最小宽度要求
@@ -112,7 +113,7 @@ class QueryConfig {
      * [imgMinWidth]
      * [videoMinWidth] 设置的值
      * */
-    var mediaMinWidth = MIN_DEFAULT_INT_VALUE
+    var mediaMinWidth: Int = MIN_DEFAULT_INT_VALUE
 
     /**
      * 对查找媒体的最大宽度要求
@@ -122,7 +123,7 @@ class QueryConfig {
      * [imgMaxWidth]
      * [videoMaxWidth] 设置的值
      * */
-    var mediaMaxWidth = MAX_DEFAULT_INT_VALUE
+    var mediaMaxWidth: Int = MAX_DEFAULT_INT_VALUE
 
     /**
      * 对查找媒体的最小高度要求
@@ -132,7 +133,7 @@ class QueryConfig {
      * [imgMinHeight]
      * [videoMinHeight] 设置的值
      * */
-    var mediaMinHeight = MIN_DEFAULT_INT_VALUE
+    var mediaMinHeight: Int = MIN_DEFAULT_INT_VALUE
 
     /**
      * 对查找媒体的最大高度要求
@@ -142,7 +143,7 @@ class QueryConfig {
      * [imgMaxHeight]
      * [videoMaxHeight] 设置的值
      * */
-    var mediaMaxHeight = MAX_DEFAULT_INT_VALUE
+    var mediaMaxHeight: Int = MAX_DEFAULT_INT_VALUE
 
     /**
      * 对查找媒体的最小文件体积要求
@@ -152,7 +153,7 @@ class QueryConfig {
      * [imgMinSize]
      * [videoMinSize] 设置的值
      * */
-    var mediaMinSize = MIN_DEFAULT_LONG_VALUE
+    var mediaMinSize: Long = MIN_DEFAULT_LONG_VALUE
 
     /**
      * 对查找媒体的最大文件体积要求
@@ -162,7 +163,7 @@ class QueryConfig {
      * [imgMaxSize]
      * [videoMaxSize] 设置的值
      * */
-    var mediaMaxSize = MAX_DEFAULT_LONG_VALUE
+    var mediaMaxSize: Long = MAX_DEFAULT_LONG_VALUE
 
     /**
      * 对查找图片的格式设置
@@ -190,19 +191,22 @@ class QueryConfig {
      * 单位为毫秒
      * 默认为-1，即不限制开始时间
      * */
-    var startTime = MIN_DEFAULT_LONG_VALUE
+    var startTime: Long = MIN_DEFAULT_LONG_VALUE
 
     /**
      * 设置查找时间范围的结束时间
      * 单位为毫秒
      * 默认为-1，即不限制结束时间
      * */
-    var endTime = MAX_DEFAULT_LONG_VALUE
+    var endTime: Long = MAX_DEFAULT_LONG_VALUE
 
     /**
-     * 设置媒体列表排序规则是否为创建时间
+     * 设置媒体列表排序规则
+     * 默认为修改时间
+     * 具体规则描述请参考
+     * [QueryRule]
      * */
-    var sortByCreate = false
+    var queryRule: QueryRule = QueryRule.MODIFY
 
 
     /**
