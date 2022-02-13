@@ -92,7 +92,7 @@ class MediaQueryStore {
             }
             return queryMediaList(cursor ?: return null, loadAlbum)
         } catch (e: Exception) {
-            Log.e("MediaPreview", "loadMediaList Data Error: " + e.message)
+            Log.e("MediaQuery", "loadMediaList Data Error: " + e.message)
             e.printStackTrace()
             return null
         } finally {
@@ -158,37 +158,78 @@ class MediaQueryStore {
             var height = 0
             var videoDuration = 0L
 
+            Log.i("MediaQuery", "load media absolutePath is: $absolutePath")
             if (mimeType.contains("video")) {
+                Log.i("MediaQuery", "load media  is: video")
                 width = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.WIDTH))
                 height = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.HEIGHT))
                 videoDuration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION))
+                Log.i("MediaQuery", "load video pre info is: width: $width, and height is: $height, and videoDuration is: $videoDuration")
                 //这里代码是对例如小红书这类不规范App的兼容
                 //猜测小红书保存视频时是直写数据库，而非Uri通知形式，
                 //而且写入时，视频的宽高时长都为0，
                 // 导致后续其他App读取媒体库时，能读到视频文件但读不到视频时长，影响用户体验
                 //所以采用MediaPlayer再次获取视频信息
                 if (width == 0 || height == 0 || videoDuration == 0L) {
+                    if (width == 0) {
+                        Log.i("MediaQuery", "load video pre info is: width: 0")
+                    }
+
+                    if (height == 0) {
+                        Log.i("MediaQuery", "load video pre info is: height: 0")
+                    }
+
+                    if (videoDuration == 0L) {
+                        Log.i("MediaQuery", "load video pre info is: videoDuration: 0")
+                    }
                     if (mediaPlayer == null) {
+                        Log.i("MediaQuery", "load video pre info is: current mediaPlayer is null")
                         mediaPlayer = MediaPlayer()
+                    } else {
+                        Log.i("MediaQuery", "load video pre info is: current mediaPlayer not null")
+                    }
+
+                    if (mediaPlayer == null) {
+                        Log.i("MediaQuery", "load video pre info is: inited mediaPlayer is null")
+                    } else {
+                        Log.i("MediaQuery", "load video pre info is: inited mediaPlayer not null")
                     }
                     mediaPlayer?.run {
+                        Log.i("MediaQuery", "load video pre info is: will call setDataSource($absolutePath)")
                         setDataSource(absolutePath)
+                        Log.i("MediaQuery", "load video pre info is: will call prepare()")
                         prepare()
+                        Log.i("MediaQuery", "load video pre info is: is called prepare()")
                         width = videoWidth
+                        Log.i("MediaQuery", "load video pre info is: get new info width: $width")
                         height = videoHeight
+                        Log.i("MediaQuery", "load video pre info is: get new info height: $height")
                         videoDuration = duration * 1000L
+                        Log.i("MediaQuery", "load video pre info is: get new info videoDuration: $videoDuration")
+                        Log.i("MediaQuery", "load video pre info is: will call reset()")
                         reset()
+                        Log.i("MediaQuery", "load video pre info is: will call release()")
                         release()
                     }
+
+                    Log.i("MediaQuery", "load video pre info is: reget info end")
                     if (!checkVideoDurationConfigs(videoDuration)) {
+                        Log.i("MediaQuery", "load video pre info is: checkVideoDurationConfigs false")
                         continue
+                    } else {
+                        Log.i("MediaQuery", "load video pre info is: checkVideoDurationConfigs true")
                     }
+                } else {
+                    Log.i("MediaQuery", "load video pre info is: width != 0,and height != 0, and videoDuration != 0")
                 }
             } else {
+                Log.i("MediaQuery", "load media  is: img")
                 width = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.WIDTH))
                 height = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.HEIGHT))
+                Log.i("MediaQuery", "load img pre info is: width: $width, and height is: $height ")
             }
 
+            Log.i("MediaQuery", "load media pre info is: end")
             val customIntConfigs: Array<Int> = checkCustomIntConfigs(width, height, mimeType) ?: continue
 
             val mediaWidth = customIntConfigs[0]
@@ -200,7 +241,7 @@ class MediaQueryStore {
             val dateModified = customLongConfigs[1]
 
             val mediaName: String = checkCustomStringConfigs(cursor) ?: continue
-
+            Log.i("MediaQuery", "load media pre info is: all end")
             //以上代码是根据固定基础要求和灵活配置获取的单个媒体的信息
             //以便能够快速排除一些不符合当前配置和要求的媒体文件
             //以下代码是对文件夹和媒体文件的处理
