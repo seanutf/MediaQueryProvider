@@ -194,22 +194,29 @@ class MediaQueryStore {
                     } else {
                         Log.i("MediaQuery", "load video pre info is: inited mediaPlayer not null")
                     }
-                    mediaPlayer?.run {
-                        Log.i("MediaQuery", "load video pre info is: will call setDataSource($absolutePath)")
-                        setDataSource(absolutePath)
+
+                    if(mediaPlayer != null) {
+                        try {
+                            Log.i("MediaQuery", "load video pre info is: will call setDataSource($absolutePath)")
+                            mediaPlayer?.setDataSource(absolutePath)
+                        } catch (e: Exception) {
+                            Log.e("MediaQuery", "load video pre info is: mediaPlayer setDataSource get error: ${e.message}")
+                            e.printStackTrace()
+                            continue
+                        }
                         Log.i("MediaQuery", "load video pre info is: will call prepare()")
-                        prepare()
+                        mediaPlayer?.prepare()
                         Log.i("MediaQuery", "load video pre info is: is called prepare()")
-                        width = videoWidth
+                        width = mediaPlayer?.videoWidth ?: 0
                         Log.i("MediaQuery", "load video pre info is: get new info width: $width")
-                        height = videoHeight
+                        height = mediaPlayer?.videoHeight ?: 0
                         Log.i("MediaQuery", "load video pre info is: get new info height: $height")
-                        videoDuration = duration * 1000L
+                        videoDuration = mediaPlayer?.duration!! * 1000L
                         Log.i("MediaQuery", "load video pre info is: get new info videoDuration: $videoDuration")
                         Log.i("MediaQuery", "load video pre info is: will call reset()")
-                        reset()
+                        mediaPlayer?.reset()
                         Log.i("MediaQuery", "load video pre info is: will call release()")
-                        release()
+                        mediaPlayer?.release()
                     }
 
                     Log.i("MediaQuery", "load video pre info is: reget info end")
