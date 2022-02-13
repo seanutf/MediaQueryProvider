@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.ContentResolver
 import android.database.Cursor
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,6 +27,7 @@ class MediaQueryStore {
     private var queryConfig: QueryConfig? = null
     private var allAlbumList: List<Album>? = null
     private var context: Application? = null
+    private var mediaPlayer: MediaPlayer? = null
 
     /**
      * 设置查找的数据参数
@@ -93,6 +95,12 @@ class MediaQueryStore {
             Log.e("MediaPreview", "loadMediaList Data Error: " + e.message)
             return null
         } finally {
+
+            if (mediaPlayer != null) {
+                mediaPlayer?.release()
+                mediaPlayer = null
+            }
+
             if (cursor != null && !cursor.isClosed) {
                 cursor.close()
             }
@@ -146,7 +154,42 @@ class MediaQueryStore {
             val absolutePath = basicRequires[0]
             val mimeType = basicRequires[1]
 
-            val customIntConfigs: Array<Int> = checkCustomIntConfigs(cursor, mimeType) ?: continue
+
+            var width = 0
+            var height = 0
+            var videoDuration = 0L
+
+            if (mimeType.contains("video")) {
+                width = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.WIDTH))
+                height = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.HEIGHT))
+                videoDuration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION))
+                //这里代码是对例如小红书这类不规范App的兼容
+                //猜测小红书保存视频时是直写数据库，而非Uri通知形式，
+                //而且写入时，视频的宽高时长都为0，
+                // 导致后续其他App读取媒体库时，能读到视频文件但读不到视频时长，影响用户体验
+                //所以采用MediaPlayer再次获取视频信息
+                if (width == 0 || height == 0 || videoDuration == 0L) {
+                    if (mediaPlayer == null) {
+                        mediaPlayer = MediaPlayer()
+                    }
+                    mediaPlayer?.run {
+                        setDataSource(absolutePath)
+                        prepare()
+                        width = videoWidth
+                        height = videoHeight
+                        videoDuration = duration * 1000L
+                        release()
+                    }
+                    if (!checkVideoDurationConfigs(videoDuration)) {
+                        continue
+                    }
+                }
+            } else {
+                width = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.WIDTH))
+                height = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.HEIGHT))
+            }
+
+            val customIntConfigs: Array<Int> = checkCustomIntConfigs(width, height, mimeType) ?: continue
 
             val mediaWidth = customIntConfigs[0]
             val mediaHeight = customIntConfigs[1]
@@ -233,7 +276,7 @@ class MediaQueryStore {
                 }
             }
 
-            val mediaItem = buildMedia(cursor, absolutePath, mimeType, mediaWidth, mediaHeight, size, dateModified, mediaName)
+            val mediaItem = buildMedia(cursor, absolutePath, mimeType, mediaWidth, mediaHeight, size, dateModified, mediaName, videoDuration)
             mediaItems.add(mediaItem)
         }
 
@@ -272,6 +315,15 @@ class MediaQueryStore {
         }
     }
 
+    private fun checkVideoDurationConfigs(duration: Long): Boolean {
+        queryConfig?.run {
+            if (duration in videoMinDuration..videoMaxDuration) {
+                return true
+            }
+        }
+        return false
+    }
+
     private fun checkCustomLongConfigs(cursor: Cursor, mimeType: String): Array<Long>? {
         val size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.SIZE))
         val dateModified = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED))
@@ -301,10 +353,7 @@ class MediaQueryStore {
         return arrayOf(size, dateModified)
     }
 
-    private fun checkCustomIntConfigs(cursor: Cursor, mimeType: String): Array<Int>? {
-        var width = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.WIDTH))
-        var height = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.HEIGHT))
-
+    private fun checkCustomIntConfigs(width: Int, height: Int, mimeType: String): Array<Int>? {
         if (mimeType.contains("video")) {
             queryConfig?.run {
                 if (width < videoMinWidth ||
@@ -338,7 +387,8 @@ class MediaQueryStore {
         mediaHeight: Int,
         size: Long,
         dateModified: Long,
-        mediaName: String
+        mediaName: String,
+        videoDuration: Long,
     ): Media {
 
         val mediaItem = Media()
@@ -350,7 +400,7 @@ class MediaQueryStore {
         mediaItem.dateModified = dateModified
 
         if (mimeType.contains("video")) {
-            mediaItem.duration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION))
+            mediaItem.duration = videoDuration
             mediaItem.artist = cursor.getStringOrNull(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST))
         }
 

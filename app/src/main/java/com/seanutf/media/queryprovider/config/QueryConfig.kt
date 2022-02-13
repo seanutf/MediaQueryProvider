@@ -24,6 +24,7 @@ class QueryConfig {
      * 对查找图片的最小宽度要求
      * 只查找大于设置值的图片
      * 默认为-1，即对最小宽度无要求
+     * 单位像素值
      * */
     var imgMinWidth: Int = MIN_DEFAULT_INT_VALUE
 
@@ -31,7 +32,8 @@ class QueryConfig {
     /**
      * 对查找图片的最大宽度要求
      * 只查找小于设置值的图片
-     * 默认为-1，即对最大宽度无要求
+     * 默认为最大值，即对最大宽度无要求
+     * 单位像素值
      * */
     var imgMaxWidth: Int = MAX_DEFAULT_INT_VALUE
 
@@ -39,27 +41,31 @@ class QueryConfig {
      * 对查找图片的最小高度要求
      * 只查找大于设置值的图片
      * 默认为-1，即对最小高度无要求
+     * 单位像素值
      * */
     var imgMinHeight: Int = MIN_DEFAULT_INT_VALUE
 
     /**
      * 对查找图片的最大高度要求
      * 只查找小于设置值的图片
-     * 默认为-1，即对最大高度无要求
+     * 默认为最大值，即对最大高度无要求
+     * 单位像素值
      * */
     var imgMaxHeight: Int = MAX_DEFAULT_INT_VALUE
 
     /**
      * 对查找图片的最小文件体积要求
      * 只查找大于设置值的图片
-     * 默认为-1，即对最小文件体积无要求
+     * 默认为10k，即对最小需大于10k
+     * 单位为Byte单位
      * */
-    var imgMinSize: Long = MIN_DEFAULT_LONG_VALUE
+    var imgMinSize: Long = 10240
 
     /**
      * 对查找图片的最大文件体积要求
      * 只查找小于设置值的图片
-     * 默认为-1，即对最大文件体积无要求
+     * 默认为最大值，即对最大文件体积无要求
+     * 单位为Byte单位
      * */
     var imgMaxSize: Long = MAX_DEFAULT_LONG_VALUE
 
@@ -67,13 +73,15 @@ class QueryConfig {
      * 对查找视频的最小宽度要求
      * 只查找大于设置值的视频
      * 默认为-1，即对最小宽度无要求
+     * 单位像素值
      * */
     var videoMinWidth: Int = MIN_DEFAULT_INT_VALUE
 
     /**
      * 对查找视频的最大宽度要求
      * 只查找小于设置值的视频
-     * 默认为-1，即对最大宽度无要求
+     * 默认为最大值，即对最大宽度无要求
+     * 单位像素值
      * */
     var videoMaxWidth: Int = MAX_DEFAULT_INT_VALUE
 
@@ -81,13 +89,15 @@ class QueryConfig {
      * 对查找视频的最小高度要求
      * 只查找大于设置值的视频
      * 默认为-1，即对最小高度无要求
+     * 单位像素值
      * */
     var videoMinHeight: Int = MIN_DEFAULT_INT_VALUE
 
     /**
      * 对查找视频的最大高度要求
      * 只查找小于设置值的视频
-     * 默认为-1，即对最大高度无要求
+     * 默认为最大值，即对最大高度无要求
+     * 单位像素值
      * */
     var videoMaxHeight: Int = MAX_DEFAULT_INT_VALUE
 
@@ -95,15 +105,34 @@ class QueryConfig {
      * 对查找视频的最小文件体积要求
      * 只查找大于设置值的视频
      * 默认为-1，即对最小文件体积无要求
+     * 单位为Byte单位
      * */
     var videoMinSize: Long = MIN_DEFAULT_LONG_VALUE
 
     /**
      * 对查找视频的最大文件体积要求
      * 只查找小于设置值的视频
-     * 默认为-1，即对最大文件体积无要求
+     * 默认为最大值，即对最大文件体积无要求
+     * 单位为Byte单位
      * */
     var videoMaxSize: Long = MAX_DEFAULT_LONG_VALUE
+
+
+    /**
+     * 对查找视频的最小时长要求
+     * 只查找大于设置值的视频
+     * 默认为0，即对最小视频时长无要求
+     * 单位毫秒
+     * */
+    var videoMinDuration: Long = 0L
+
+    /**
+     * 对查找视频的最大时长要求
+     * 只查找小于设置值的视频
+     * 默认为最大值，即对最大视频时长无要求
+     * 单位毫秒
+     * */
+    var videoMaxDuration: Long = MAX_DEFAULT_LONG_VALUE
 
     /**
      * 对查找媒体的最小宽度要求
@@ -112,6 +141,7 @@ class QueryConfig {
      * 设置改值后，会覆盖
      * [imgMinWidth]
      * [videoMinWidth] 设置的值
+     * 单位像素值
      * */
     var mediaMinWidth: Int = MIN_DEFAULT_INT_VALUE
 
@@ -122,6 +152,7 @@ class QueryConfig {
      * 设置改值后，会覆盖
      * [imgMaxWidth]
      * [videoMaxWidth] 设置的值
+     * 单位像素值
      * */
     var mediaMaxWidth: Int = MAX_DEFAULT_INT_VALUE
 
@@ -132,6 +163,7 @@ class QueryConfig {
      * 设置改值后，会覆盖
      * [imgMinHeight]
      * [videoMinHeight] 设置的值
+     * 单位像素值
      * */
     var mediaMinHeight: Int = MIN_DEFAULT_INT_VALUE
 
@@ -142,6 +174,7 @@ class QueryConfig {
      * 设置改值后，会覆盖
      * [imgMaxHeight]
      * [videoMaxHeight] 设置的值
+     * 单位像素值
      * */
     var mediaMaxHeight: Int = MAX_DEFAULT_INT_VALUE
 
@@ -152,6 +185,7 @@ class QueryConfig {
      * 设置改值后，会覆盖
      * [imgMinSize]
      * [videoMinSize] 设置的值
+     * 单位为Byte值
      * */
     var mediaMinSize: Long = MIN_DEFAULT_LONG_VALUE
 
@@ -162,6 +196,7 @@ class QueryConfig {
      * 设置该值后，会覆盖
      * [imgMaxSize]
      * [videoMaxSize] 设置的值
+     * 单位为Byte值
      * */
     var mediaMaxSize: Long = MAX_DEFAULT_LONG_VALUE
 
@@ -190,6 +225,7 @@ class QueryConfig {
      * 设置查找时间范围的开始时间
      * 单位为毫秒
      * 默认为-1，即不限制开始时间
+     * 单位毫秒值
      * */
     var startTime: Long = MIN_DEFAULT_LONG_VALUE
 
@@ -197,6 +233,7 @@ class QueryConfig {
      * 设置查找时间范围的结束时间
      * 单位为毫秒
      * 默认为-1，即不限制结束时间
+     * 单位毫秒值
      * */
     var endTime: Long = MAX_DEFAULT_LONG_VALUE
 
