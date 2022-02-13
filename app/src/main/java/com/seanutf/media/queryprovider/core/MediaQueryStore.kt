@@ -97,7 +97,7 @@ class MediaQueryStore {
         } finally {
 
             if (mediaPlayer != null) {
-                mediaPlayer?.release()
+                mediaPlayer?.reset()
                 mediaPlayer = null
             }
 
@@ -179,6 +179,7 @@ class MediaQueryStore {
                         height = videoHeight
                         videoDuration = duration * 1000L
                         release()
+                        reset()
                     }
                     if (!checkVideoDurationConfigs(videoDuration)) {
                         continue
