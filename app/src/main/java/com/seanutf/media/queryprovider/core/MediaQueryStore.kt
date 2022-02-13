@@ -95,9 +95,7 @@ class MediaQueryStore {
             Log.e("MediaPreview", "loadMediaList Data Error: " + e.message)
             return null
         } finally {
-
             if (mediaPlayer != null) {
-                mediaPlayer?.reset()
                 mediaPlayer = null
             }
 
