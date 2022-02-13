@@ -7,6 +7,11 @@ import com.seanutf.media.queryprovider.QueryMode
 import com.seanutf.media.queryprovider.QueryRule
 import com.seanutf.media.queryprovider.config.QueryConfig
 
+/**
+ * 根据外部参数配置，
+ * 生成系统媒体数据库可识别的
+ * sql查询语句
+ * */
 class MediasQueryConfigProvider {
     private var queryConfig: QueryConfig? = null
 
