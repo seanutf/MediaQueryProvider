@@ -176,8 +176,8 @@ class MediaQueryStore {
                         width = videoWidth
                         height = videoHeight
                         videoDuration = duration * 1000L
-                        release()
                         reset()
+                        release()
                     }
                     if (!checkVideoDurationConfigs(videoDuration)) {
                         continue
