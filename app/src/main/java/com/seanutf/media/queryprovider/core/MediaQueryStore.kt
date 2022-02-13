@@ -93,6 +93,7 @@ class MediaQueryStore {
             return queryMediaList(cursor ?: return null, loadAlbum)
         } catch (e: Exception) {
             Log.e("MediaPreview", "loadMediaList Data Error: " + e.message)
+            e.printStackTrace()
             return null
         } finally {
             if (mediaPlayer != null) {
