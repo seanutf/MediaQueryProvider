@@ -19,6 +19,7 @@ public class Media implements Serializable {
     public long size;//媒体文件的文件大小
     public long duration;//媒体文件的时长(视频)
     public String name;//媒体文件的名称
+    public boolean isGif; //是否为GIF图片
 
     public boolean isVideo() {
         return mediaType == TYPE_MEDIA_VIDEO;

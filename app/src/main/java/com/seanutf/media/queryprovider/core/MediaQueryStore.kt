@@ -421,6 +421,9 @@ class MediaQueryStore {
             mediaItem.mediaType = Media.TYPE_MEDIA_VIDEO
         } else if (mimeType.contains("image")) {
             mediaItem.mediaType = Media.TYPE_MEDIA_IMAGE
+            if (mimeType.contains("image/gif")) {
+                mediaItem.isGif = true
+            }
         }
 
         return mediaItem
